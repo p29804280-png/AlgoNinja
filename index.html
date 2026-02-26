@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="fa" dir="rtl" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>در حال بروزرسانی</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    * {
+      font-family: 'Vazirmatn', sans-serif;
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #f5f5f7 0%, #e8e8f0 50%, #dcdce8 100%);
+    }
+    
+    .circle-container {
+      position: relative;
+      width: 320px;
+      height: 320px;
+    }
+    
+    .main-circle {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 
+        0 0 60px rgba(168, 85, 247, 0.15),
+        inset 0 0 60px rgba(168, 85, 247, 0.08);
+    }
+    
+    .snake-wrapper {
+      position: absolute;
+      inset: -20px;
+      animation: rotate 12s linear infinite;
+    }
+    
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .snake-path {
+      fill: none;
+      stroke: url(#snakeGradient);
+      stroke-width: 8;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 10px rgba(138, 43, 226, 0.6));
+    }
+    
+    .snake-head {
+      fill: #e879f9;
+      filter: drop-shadow(0 0 8px #e879f9);
+    }
+    
+    .inner-glow {
+      position: absolute;
+      inset: 40px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
+      animation: pulse 3s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+    
+    .update-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .update-icon svg {
+      width: 80px;
+      height: 80px;
+      opacity: 0.6;
+      animation: iconPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes iconPulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.1); opacity: 0.9; }
+    }
+    
+    .floating-particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(107, 114, 128, 0.4);
+      border-radius: 50%;
+      animation: float 8s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(100%) translateX(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100%) translateX(20px); opacity: 0; }
+    }
+    
+    .message-text {
+      text-shadow: 0 0 20px rgba(107, 114, 128, 0.2);
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div class="gradient-bg h-full w-full flex flex-col items-center justify-center overflow-hidden relative"><!-- Floating Particles -->
+   <div class="floating-particles">
+    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 20%; animation-delay: 1s;"></div>
+    <div class="particle" style="left: 30%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 40%; animation-delay: 3s;"></div>
+    <div class="particle" style="left: 50%; animation-delay: 4s;"></div>
+    <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+    <div class="particle" style="left: 70%; animation-delay: 6s;"></div>
+    <div class="particle" style="left: 80%; animation-delay: 7s;"></div>
+    <div class="particle" style="left: 90%; animation-delay: 0.5s;"></div>
+   </div><!-- Main Circle with Snake -->
+   <div class="circle-container">
+    <div class="main-circle"></div>
+    <div class="inner-glow"></div><!-- Rotating Snake -->
+    <div class="snake-wrapper">
+     <svg viewbox="0 0 360 360" width="360" height="360"><defs>
+       <lineargradient id="snakeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#8b5cf6">
+         <animate attributename="stop-color" values="#8b5cf6;#ec4899;#06b6d4;#8b5cf6" dur="4s" repeatcount="indefinite" />
+        </stop>
+        <stop offset="50%" style="stop-color:#ec4899">
+         <animate attributename="stop-color" values="#ec4899;#06b6d4;#8b5cf6;#ec4899" dur="4s" repeatcount="indefinite" />
+        </stop>
+        <stop offset="100%" style="stop-color:#06b6d4">
+         <animate attributename="stop-color" values="#06b6d4;#8b5cf6;#ec4899;#06b6d4" dur="4s" repeatcount="indefinite" />
+        </stop>
+       </lineargradient>
+      </defs> <!-- Snake Body - Arc around circle --> <path class="snake-path" d="M 180 30 A 150 150 0 1 1 50 230">
+       <animate attributename="stroke-dasharray" values="0,1000;600,1000;0,1000" dur="12s" repeatcount="indefinite" />
+      </path> <!-- Snake Head --> <g class="snake-head" transform="translate(180, 30)">
+       <ellipse cx="0" cy="0" rx="12" ry="8" />
+       <circle cx="-6" cy="-3" r="2" fill="#1a1a2e" />
+       <circle cx="6" cy="-3" r="2" fill="#1a1a2e" /> <!-- Tongue -->
+       <path d="M 0 8 Q 0 15 -5 18 M 0 8 Q 0 15 5 18" stroke="#e879f9" stroke-width="2" fill="none">
+        <animate attributename="d" values="M 0 8 Q 0 15 -5 18 M 0 8 Q 0 15 5 18;M 0 8 Q 0 12 -3 14 M 0 8 Q 0 12 3 14;M 0 8 Q 0 15 -5 18 M 0 8 Q 0 15 5 18" dur="0.5s" repeatcount="indefinite" />
+       </path>
+      </g>
+     </svg>
+    </div><!-- Center Update Icon -->
+    <div class="update-icon">
+     <svg viewbox="0 0 24 24" fill="none" stroke="url(#iconGradient)" stroke-width="1.5"><defs>
+       <lineargradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#8b5cf6" />
+        <stop offset="100%" style="stop-color:#ec4899" />
+       </lineargradient>
+      </defs> <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+     </svg>
+    </div>
+   </div><!-- Message -->
+   <div class="mt-12 text-center px-6">
+    <p class="message-text text-purple-600 text-lg md:text-xl font-semibold mb-4">به زودی باز می‌گردیم</p>
+    <p id="mainMessage" class="message-text text-gray-700 text-xl md:text-2xl font-medium leading-relaxed mb-8">تا نوروز این سایت بسته می‌باشد و درحال بروز رسانی است.</p><!-- Countdown Timer -->
+    <div class="flex gap-4 justify-center mb-8">
+     <div class="flex flex-col items-center">
+      <div class="bg-white/60 backdrop-blur-md border border-purple-200/50 rounded-lg px-4 py-3 min-w-20">
+       <p id="days" class="text-2xl md:text-3xl font-bold text-purple-600">00</p>
+      </div>
+      <p class="text-xs text-gray-600 mt-2">روز</p>
+     </div>
+     <div class="flex flex-col items-center">
+      <div class="bg-white/60 backdrop-blur-md border border-pink-200/50 rounded-lg px-4 py-3 min-w-20">
+       <p id="hours" class="text-2xl md:text-3xl font-bold text-pink-600">00</p>
+      </div>
+      <p class="text-xs text-gray-600 mt-2">ساعت</p>
+     </div>
+     <div class="flex flex-col items-center">
+      <div class="bg-white/60 backdrop-blur-md border border-cyan-200/50 rounded-lg px-4 py-3 min-w-20">
+       <p id="minutes" class="text-2xl md:text-3xl font-bold text-cyan-600">00</p>
+      </div>
+      <p class="text-xs text-gray-600 mt-2">دقیقه</p>
+     </div>
+     <div class="flex flex-col items-center">
+      <div class="bg-white/60 backdrop-blur-md border border-purple-200/50 rounded-lg px-4 py-3 min-w-20">
+       <p id="seconds" class="text-2xl md:text-3xl font-bold text-purple-600">00</p>
+      </div>
+      <p class="text-xs text-gray-600 mt-2">ثانیه</p>
+     </div>
+    </div>
+    <div class="mt-6 flex items-center justify-center gap-2"><span class="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0s;"></span> <span class="w-2 h-2 bg-pink-400 rounded-full animate-bounce" style="animation-delay: 0.2s;"></span> <span class="w-2 h-2 bg-cyan-400 rounded-full animate-bounce" style="animation-delay: 0.4s;"></span>
+    </div>
+   </div><!-- Decorative Elements -->
+   <div class="absolute top-10 left-10 w-20 h-20 bg-purple-300/20 rounded-full blur-2xl"></div>
+   <div class="absolute bottom-10 right-10 w-32 h-32 bg-pink-300/15 rounded-full blur-3xl"></div>
+   <div class="absolute top-1/4 right-1/4 w-16 h-16 bg-cyan-300/20 rounded-full blur-xl"></div>
+  </div>
+  <script>
+    const defaultConfig = {
+      main_message: 'تا نوروز این سایت بسته می‌باشد و درحال بروز رسانی است.',
+      background_color: '#f5f5f7',
+      text_color: '#374151',
+      accent_color: '#a855f7'
+    };
+
+    // Countdown timer to Nowruz (1 Farvardin = March 20/21)
+    function updateCountdown() {
+      const now = new Date();
+      let targetDate;
+      
+      // Calculate next Nowruz (1 Farvardin)
+      const currentYear = now.getFullYear();
+      // Nowruz is typically March 20/21
+      targetDate = new Date(currentYear, 2, 20, 0, 0, 0);
+      
+      // If Nowruz has passed, target next year
+      if (now > targetDate) {
+        targetDate = new Date(currentYear + 1, 2, 20, 0, 0, 0);
+      }
+      
+      const difference = targetDate - now;
+      
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((difference / 1000 / 60) % 60);
+      const seconds = Math.floor((difference / 1000) % 60);
+      
+      document.getElementById('days').textContent = String(days).padStart(2, '0');
+      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
+
+    async function onConfigChange(config) {
+      const messageEl = document.getElementById('mainMessage');
+      if (messageEl) {
+        messageEl.textContent = config.main_message || defaultConfig.main_message;
+      }
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => {
+              config.background_color = value;
+              window.elementSdk.setConfig({ background_color: value });
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              config.text_color = value;
+              window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => config.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              config.accent_color = value;
+              window.elementSdk.setConfig({ accent_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ['main_message', config.main_message || defaultConfig.main_message]
+      ]);
+    }
+
+    // Start countdown on page load
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d412543856a5d72',t:'MTc3MjEyNjc2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
